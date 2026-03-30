@@ -1,9 +1,8 @@
 # streamlit-final-project
 
-#MarketMetrics: Campaign Performance Dashboard
+# MarketMetrics: Campaign Performance Dashboard
 
-##Student Name 
-Giana Gentile 
+## Giana Gentile 
 
 ## App Description 
 My app's intended use is to help users analyze and trak the perfromacr of marketing campagins. This is done by utilizing key metrics and interactive visualizations. In the app, users will be able to explore/examine campgain data, identify trends, and determine the effectiveness of the campgain based on click through rates (CTR) and conversion rates. 
