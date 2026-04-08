@@ -34,6 +34,10 @@ if uploaded_file is not None:
     st.subheader("📈 CTR Chart")
     st.bar_chart(df.set_index("Campaign")["CTR"])
 
+    # Bar chart for Conversion Rate
+    st.subheader("🎯 Conversion Rate Chart")
+    st.bar_chart(df.set_index("Campaign")["Conversion Rate"])
+
     # Optional: download results
     st.download_button(
         "Download results as CSV",
@@ -91,6 +95,7 @@ else:
 
         st.divider()
 
+        # --- Quick Verdict ---
         st.subheader("💡 Quick Verdict")
         if ctr >= 0.05:
             st.success(f"Great job! A {ctr:.2%} CTR is strong.")
@@ -98,3 +103,19 @@ else:
             st.warning(f"Not bad! A {ctr:.2%} CTR is average.")
         else:
             st.error(f"A {ctr:.2%} CTR is low. Consider improving your ad.")
+
+        # --- CHARTS FOR MANUAL INPUT ---
+        manual_df = pd.DataFrame({
+            "Campaign": [campaign_name],
+            "CTR": [ctr],
+            "Conversion Rate": [conversion_rate],
+            "Impressions": [impressions],
+            "Clicks": [clicks],
+            "Conversions": [conversions]
+        })
+
+        st.subheader("📈 CTR Chart")
+        st.bar_chart(manual_df.set_index("Campaign")["CTR"])
+
+        st.subheader("🎯 Conversion Rate Chart")
+        st.bar_chart(manual_df.set_index("Campaign")["Conversion Rate"])
