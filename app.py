@@ -1,96 +1,100 @@
-import streamlit as st   
+import streamlit as st
 import pandas as pd
 
 # --- TITLE ---
 st.title("MarketMetrics: Campaign Performance Dashboard")
 
 # --- DESCRIPTION ---
-st.write("Enter your own campaign data below and we'll calculate how well your ad performed.")
+st.write("Enter your campaign data manually or upload a CSV to calculate CTR and Conversion Rate for your campaigns.")
 
 st.divider()
 
-# --- OPTIONAL: Upload Data ---
-st.subheader("📂 Upload Campaign Data (Optional)")
-uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
+# --- CSV UPLOADER ---
+uploaded_file = st.file_uploader(
+    "Upload a CSV with your campaign data (optional)",
+    type=["csv"]
+)
 
+# --- CSV PROCESSING ---
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-    st.write("Preview of Uploaded Data:")
+
+    st.subheader("📊 Campaign Results from CSV")
+
+    # Calculate CTR and Conversion Rate
+    df["CTR"] = df["Clicks"] / df["Impressions"]
+    df["Conversion Rate"] = df.apply(
+        lambda row: row["Conversions"] / row["Clicks"] if row["Clicks"] > 0 else 0,
+        axis=1
+    )
+
     st.dataframe(df)
 
-st.divider()
+    # Bar chart for CTR
+    st.subheader("📈 CTR Chart")
+    st.bar_chart(df.set_index("Campaign")["CTR"])
 
-# --- INPUT SECTION ---
-st.header("Enter Campaign Details")
-
-campaign_name = st.text_input("What is your campaign called?", placeholder="e.g. Summer Sale, Holiday Promo...")
-
-channel = st.selectbox("Where did your ad run?", ["Instagram", "Facebook", "Google Ads", "Email", "TikTok", "Other"])
-
-impressions = st.number_input("How many people SAW your ad? (Impressions)", min_value=0, step=1)
-
-clicks = st.number_input("How many people CLICKED your ad? (Clicks)", min_value=0, step=1)
-
-conversions = st.number_input("How many people took action after clicking? (Conversions)", min_value=0, step=1)
-
-st.divider()
-
-# --- OUTPUT ---
-st.subheader("📊 Your Results")
-
-if campaign_name == "":
-    st.info(" Start by typing your campaign name above!")
-
-elif impressions == 0:
-    st.info(" Enter how many people saw your ad to get started.")
-
-elif clicks > impressions:
-    st.error("❌ Clicks can't be more than Impressions. Please check your numbers.")
-
-elif conversions > clicks:
-    st.error("❌ Conversions can't be more than Clicks. Please check your numbers.")
+    # Optional: download results
+    st.download_button(
+        "Download results as CSV",
+        df.to_csv(index=False),
+        file_name="campaign_results.csv"
+    )
 
 else:
-    ctr = clicks / impressions
+    # --- MANUAL INPUTS ---
+    st.subheader("Or enter campaign data manually:")
 
-    if clicks > 0:
-        conversion_rate = conversions / clicks
+    campaign_name = st.text_input("Campaign Name", placeholder="e.g. Summer Sale, Holiday Promo...")
+    channel = st.selectbox("Channel", ["Instagram", "Facebook", "Google Ads", "Email", "TikTok", "Other"])
+    impressions = st.number_input("Impressions (people who saw your ad)", min_value=0, step=1)
+    clicks = st.number_input("Clicks (people who clicked)", min_value=0, step=1)
+    conversions = st.number_input("Conversions (people who took action)", min_value=0, step=1)
+
+    st.divider()
+
+    # --- OUTPUT ---
+    st.subheader("📊 Your Results")
+
+    if campaign_name == "":
+        st.info("Start by typing your campaign name above!")
+
+    elif impressions == 0:
+        st.info("Enter how many people saw your ad to get started.")
+
+    elif clicks > impressions:
+        st.error("❌ Clicks can't be more than Impressions. Please check your numbers.")
+
+    elif conversions > clicks:
+        st.error("❌ Conversions can't be more than Clicks. Please check your numbers.")
+
     else:
-        conversion_rate = 0
+        ctr = clicks / impressions
+        conversion_rate = conversions / clicks if clicks > 0 else 0
 
-    st.write(f"**Campaign Name:** {campaign_name}")
-    st.write(f"**Channel:** {channel}")
+        st.write(f"**Campaign Name:** {campaign_name}")
+        st.write(f"**Channel:** {channel}")
 
-    st.divider()
+        st.divider()
 
-    st.write(f"👁️ **Impressions:** {impressions:,}")
-    st.write(f"🖱️ **Clicks:** {clicks:,}")
-    st.write(f"✅ **Conversions:** {conversions:,}")
+        st.write(f"👁️ **Impressions:** {impressions:,}")
+        st.write(f"🖱️ **Clicks:** {clicks:,}")
+        st.write(f"✅ **Conversions:** {conversions:,}")
 
-    st.divider()
+        st.divider()
 
-    st.write(f"📈 **CTR (Click-Through Rate):** {ctr:.2%}")
-    st.write(f"🎯 **Conversion Rate:** {conversion_rate:.2%}")
+        st.write(f"📈 **CTR (Click-Through Rate):** {ctr:.2%}")
+        st.caption("CTR = Clicks ÷ Impressions")
 
-    st.divider()
+        st.write(f"🎯 **Conversion Rate:** {conversion_rate:.2%}")
+        st.caption("Conversion Rate = Conversions ÷ Clicks")
 
-    # --- NEW: CHART ---
-    st.subheader("📊 Performance Chart")
+        st.divider()
 
-    chart_data = pd.DataFrame({
-        'Metric': ['Impressions', 'Clicks', 'Conversions'],
-        'Value': [impressions, clicks, conversions]
-    })
-
-    st.bar_chart(chart_data.set_index('Metric'))
-
-    st.divider()
-
-    # --- Verdict ---
-    st.subheader("💡 Quick Verdict")
-    if ctr >= 0.05:
-        st.success(f"Great job! A {ctr:.2%} CTR is strong.")
-    elif ctr >= 0.02:
-        st.warning(f"A {ctr:.2%} CTR is average.")
-    else:
-        st.error(f"A {ctr:.2%} CTR is low. Consider improving your ad.")
+        st.subheader("💡 Quick Verdict")
+        if ctr >= 0.05:
+            st.success(f"Great job! A {ctr:.2%} CTR is strong.")
+        elif ctr >= 0.02:
+            st.warning(f"Not bad! A {ctr:.2%} CTR is average.")
+        else:
+            st.error(f"A {ctr:.2%} CTR is low. Consider improving your ad.")
