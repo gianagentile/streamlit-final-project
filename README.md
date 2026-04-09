@@ -5,10 +5,10 @@
 ## Giana Gentile 
 
 ## App Description 
-My app's intended use is to help users analyze and track the performance of marketing campaign. This is done by utilizing key metrics and interactive visualizations. In the app, users will be able to explore/examine campgain data, identify trends, and determine the effectiveness of the campgain based on click through rates (CTR) and conversion rates. 
+The Marketing Campaign Performance Analyzer is a web application designed to help users analyze and track the performance of their marketing campaigns using key metrics and interactive visualizations. Users can input their own campaign data, explore trends, and evaluate campaign effectiveness based on Click-Through Rate (CTR) and Conversion Rate calculations. The app provides real-time feedback and input validation to ensure accurate, meaningful results.
 
 ## Intended Users 
-This app is ultimaelty intended for marketing students, analyics students, and business who want to understand and evaluate the performace of marketing campagins. 
+This app is ultimaelty intended for marketing students, analyics students, and business who want to understand and evaluate the performace of marketing campagins. It helps the intended users to evaluate the campaign performace, strengthen data interpertation skills and compare overall effectiveness of the campagin. 
 
 ## Added Features  
 - Feature 1: Users can input campaign data (impressions, clicks, conversions)
@@ -31,3 +31,35 @@ This app is ultimaelty intended for marketing students, analyics students, and b
      
 3. Caculations
    - Since the app automatically cacluates CTR and conversion rates based on the inputs I had to figure out the caculations and how to apply them within the code to run smootly and correctly. 
+
+## Final Features 
+1. Data Input
+   - Users can manually enter their campaign data i.e. impressions, clicks, conversion, name, and channel.
+
+2. Automatic Calculation and Feedback
+   - MarketMetrics automatically and seamlessly calculates Click-Through-Rate and Conversion rate based on user inputs. Futhermore, users recieve an immediate evaluation/feedback of their campagins metrics.
+     
+3. Input Validation
+   - The app is programed to prevent unrealistic data entries and dispays error message if done so. (ex: more clicks than impressions)
+     
+4. Charts and Visualization
+   - The impression, clicks, and conversion data are displayed in interactive/clean graphs and charts.
+     
+5. Custom Data Set Upload Feature
+   - Users can optionally upload their own dataset to analyze bigger and more complex data.
+     
+6. Multi-Campaign Comparison
+   - Users can compare multiple campagins side by side to determine most effective attributes/strategies.
+
+## Deployed App 
+https://app-final-project-cbktvdymddwuvpv3utkkz3.streamlit.app
+
+## How to Use the App 
+1. Click the link to launch app in web-browser
+2. Enter Campaign Data - enter the name of campagin, channel it is on, number of clicks, impressions, and conversions in the provided fields.
+3. View Caculated Data - after data is provided, the app will automatically calculate and display the Click-Through-Rates and Conversion Rates
+4. Review data provided buy understanding the calculations and what they mean for your campagin
+5. Use Visualizations - use the chart data to get a better understanding of data and interact with charts/graphs
+6. Upload Dataset (Optional but Suggested)- Use the upload feature to import a custom CSV file with columns 'Campaign', 'Channel', 'Impression', 'Clicks', 'Conversions' for more advanced data analysis
+7. Compare Compagins (Optional) - The app allows you to add multiple campagins to compare their performance metrics side by side instantly.
+8. For CSV Uploads: the app allows you to download the calcualted results as a new CSV. 
