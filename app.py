@@ -30,13 +30,15 @@ if uploaded_file is not None:
 
     st.dataframe(df)
 
-    # Bar chart for CTR
+    # --- Charts ---
     st.subheader("📈 CTR Chart")
     st.bar_chart(df.set_index("Campaign")["CTR"])
 
-    # Bar chart for Conversion Rate
     st.subheader("🎯 Conversion Rate Chart")
     st.bar_chart(df.set_index("Campaign")["Conversion Rate"])
+
+    st.subheader("📊 Impressions / Clicks / Conversions")
+    st.bar_chart(df.set_index("Campaign")[["Impressions", "Clicks", "Conversions"]])
 
     # Optional: download results
     st.download_button(
@@ -104,7 +106,7 @@ else:
         else:
             st.error(f"A {ctr:.2%} CTR is low. Consider improving your ad.")
 
-        # --- CHARTS FOR MANUAL INPUT ---
+        # --- MANUAL INPUT CHARTS ---
         manual_df = pd.DataFrame({
             "Campaign": [campaign_name],
             "CTR": [ctr],
@@ -119,3 +121,6 @@ else:
 
         st.subheader("🎯 Conversion Rate Chart")
         st.bar_chart(manual_df.set_index("Campaign")["Conversion Rate"])
+
+        st.subheader("📊 Impressions / Clicks / Conversions")
+        st.bar_chart(manual_df.set_index("Campaign")[["Impressions", "Clicks", "Conversions"]])
